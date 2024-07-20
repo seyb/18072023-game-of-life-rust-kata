@@ -1,8 +1,9 @@
 use std::cmp::PartialEq;
 
 fn main() {
-    println!("Hello, world!");
-    println!("Hello, world!");
+    let mut life = GameOfLife::new(4, 4);
+    life.set_living_cell(2, 2);
+    println!("{:?}", life);
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -13,7 +14,7 @@ pub enum LivingCell {
 
 #[derive(Debug, PartialEq)]
 pub struct GameOfLife {
-    pub board: Vec<Vec<LivingCell>>,
+    board: Vec<Vec<LivingCell>>,
 }
 
 impl PartialEq<Vec<Vec<LivingCell>>> for GameOfLife {
@@ -57,7 +58,7 @@ mod test {
         let mut board = GameOfLife::new(4, 4);
         board.set_living_cell(2, 2);
 
-        let line = vec![LivingCell::DEAD, LivingCell::DEAD, LivingCell::DEAD, LivingCell::DEAD];
+        let line = vec![LivingCell::DEAD; 4];
         let expected_board = vec![line.clone(), vec![LivingCell::DEAD, LivingCell::ALIVE, LivingCell::DEAD, LivingCell::DEAD], line.clone(), line.clone()];
         assert_eq!(board.board, expected_board)
     }
