@@ -25,9 +25,12 @@ impl PartialEq<Vec<Vec<LivingCell>>> for GameOfLife {
 
 impl GameOfLife {
     fn new(number_of_cells: usize, number_of_lines: usize) -> Self {
-        let mut line = vec![LivingCell::DEAD; number_of_cells];
-        let mut board = vec![line.clone(); number_of_lines];
+        let line = vec![LivingCell::DEAD; number_of_cells];
+        let board = vec![line.clone(); number_of_lines];
         Self { board }
+    }
+    fn set_living_cell(&mut self, line: usize, cell: usize) {
+        self.board[line-1][cell-1] = LivingCell::ALIVE
     }
 }
 
@@ -44,9 +47,19 @@ mod test {
 
     #[test]
     fn it_inits_the_board_with_dead_cells() {
+        let line = vec![LivingCell::DEAD; 4];
+        let board = vec![line.clone(); 4];
+        assert_eq!(GameOfLife::new(4, 4), GameOfLife { board });
+    }
+
+    #[test]
+    fn it_set_living_cell() {
+        let mut board = GameOfLife::new(4, 4);
+        board.set_living_cell(2, 2);
+
         let line = vec![LivingCell::DEAD, LivingCell::DEAD, LivingCell::DEAD, LivingCell::DEAD];
-        let vec1 = vec![line.clone(), line.clone(), line.clone(), line.clone()];
-        assert_eq!(GameOfLife::new(4, 4), GameOfLife { board: vec1 });
+        let expected_board = vec![line.clone(), vec![LivingCell::DEAD, LivingCell::ALIVE, LivingCell::DEAD, LivingCell::DEAD], line.clone(), line.clone()];
+        assert_eq!(board.board, expected_board)
     }
 }
 
