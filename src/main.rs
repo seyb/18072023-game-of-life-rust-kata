@@ -24,22 +24,23 @@ impl PartialEq<Vec<Vec<LivingCell>>> for GameOfLife {
 
 
 impl GameOfLife {
-    fn new(x: i32, y: i32) -> Self {
-        let mut line = vec![];
-        for _i in 0..x {
-            line.push(LivingCell::DEAD)
-        }
-        let mut board = vec![];
-        for _i in 0..y {
-            board.push(line.clone())
-        }
-        Self{ board }
+    fn new(number_of_cells: usize, number_of_lines: usize) -> Self {
+        let mut line = vec![LivingCell::DEAD; number_of_cells];
+        let mut board = vec![line.clone(); number_of_lines];
+        Self { board }
     }
 }
 
 #[cfg(test)]
 mod test {
     use crate::{GameOfLife, LivingCell};
+
+    /*
+    1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
+    2. Any live cell with more than three live neighbours dies, as if by overcrowding.
+    3. Any live cell with two or three live neighbours lives on to the next generation.
+    4. Any dead cell with exactly three live neighbours becomes a live cell.
+    */
 
     #[test]
     fn it_inits_the_board_with_dead_cells() {
